@@ -1,0 +1,3 @@
+#!/bin/bash
+apikey=YOUR_API_KEY_HERE
+curl --silent "https://api.openweathermap.org/data/2.5/weather?q=$1&appid=$apikey&units=metric"

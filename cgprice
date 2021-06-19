@@ -1,0 +1,65 @@
+#!/usr/bin/python3
+# Name: cgprice
+# Purpose: this is a sample XCloud service plugin which gets the current 
+#          price of a specified coin in a specified fiat currency using
+#          the CoinGecko public API as wrapped by https://github.com/man-c/pycoingecko
+# Usage: cgprice [coin] [currency]
+# 
+#        [coin] may be specified as an id, symbol or name but must resolve 
+#               to a valid id as found in the API /coins/list
+#               If not specified, or empty, or invalid it defaults to BLOCK.
+#        [currency] must be a member of API /simple/supprted_vs_currencies
+#               If not specified, or empty, or invalid it defaults to USD.
+#
+# Licence: MIT License
+# Copyright (c) 2021 Mark Brooker
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy
+# of this software and associated documentation files (the "Software"), to deal
+# in the Software without restriction, including without limitation the rights
+# to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+# copies of the Software, and to permit persons to whom the Software is
+# furnished to do so, subject to the following conditions:
+#
+# The above copyright notice and this permission notice shall be included in all
+# copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+# IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+# FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+# AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+# LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+# OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+# SOFTWARE.
+#
+
+import sys
+from pycoingecko import CoinGeckoAPI
+cg = CoinGeckoAPI()
+if len(sys.argv) == 1:
+    coin = 'blocknet'
+    currency = 'usd'
+elif len(sys.argv) == 2:
+    coin = sys.argv[1].lower()
+    currency = "usd"
+else:
+    coin = sys.argv[1].lower()
+    currency = sys.argv[2].lower()
+    if currency not in cg.get_supported_vs_currencies():
+        currency = 'usd'
+supported = cg.get_coins_list()
+key = 'unsupported'
+for t in supported:
+    if t['id'].lower() == coin:
+        key = t['id']
+        break
+    elif t['symbol'].lower() == coin:
+        key = t['id']
+        break
+    elif t['name'].lower() == coin:
+        key = t['id']
+        break
+if key == 'unsupported':
+    key = 'blocknet'
+price = cg.get_price(ids=key, vs_currencies=currency)
+print(price[key][currency])

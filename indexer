@@ -1,0 +1,20 @@
+#!/bin/bash
+indexer='http://YOUR_INDEXER_IPv4_HERE:8080/v1/graphql'
+case "$1" in 
+  pairs)
+    curl --silent $indexer --compressed --data-raw \
+      '{"query":"{ pairs { id address token0 token1 exchange }}","variables":null}'
+    ;;
+  tokens)
+    curl --silent $indexer --compressed --data-raw \
+     '{"query":"{ tokens { name symbol address decimals }}","variables":null}'
+    ;;
+  trades)
+    #curl --silent $indexer --compressed --data-raw \
+    # '{"query":"{ trades { id timestamp txid side from_address to_address from_amount to_amount }}","variables":null}'
+    echo "trades query is too slow"
+    ;;
+  *)
+    echo "Supported parms are pairs|tokens|trades"
+    ;;
+esac

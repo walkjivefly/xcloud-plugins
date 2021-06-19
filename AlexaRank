@@ -1,0 +1,10 @@
+#!/bin/bash
+url=$1
+apikey=YOUR_API_KEY_HERE
+
+rank=`curl -s -H "x-api-key: ${apikey}" "https://awis.api.alexa.com/api?Action=UrlInfo&ResponseGroup=Rank&Url=${url}" | grep -oP '(?<=Rank>)[^<]+'`
+
+if [[ -z ${rank} ]]; then 
+  rank="Unranked"
+fi
+echo $rank
