@@ -59,7 +59,6 @@ Docker-type plugins can be much more functional than RPC ones but are more compl
 | Plugin | Description |
 | ----------- | ----------- |
 | AlexaRank | Find the Alexa page rank for a URL |
-| bitly | Generate a bit.ly shortened URL |
 | cgprice | Get the current CoinGecko price for a coin or token |
 | cgpricej | Get extended current CoinGecko price information for a coin or token |
 | indexer | Run pre-packaged sample queries against the Blocknet/Avalanche indexer |
@@ -92,7 +91,6 @@ Plugins don't have to call external APIs; they can get data from *any* source, s
    | Plugin | API key available from |
    | ----------- | ----------- |
    | AlexaRank | https://aws.amazon.com/marketplace/pp/prodview-w6qmxismbbs7u?ref_=srh_res_product_title |
-   | bitly | https://support.bitly.com/hc/en-us/articles/230647907-How-do-I-generate-an-OAuth-access-token-for-the-Bitly-API- | 
    | weather | https://openweathermap.org/appid |
 3. The cgprice, cgpricej, yfprice and yfticker plugins don't (currently) require a personal API key.
 4. Customise the target address in the indexer plugin. This demonstrates that the actual service may be provided by some machine other than the servicenode host itself.
@@ -116,7 +114,6 @@ Plugins don't have to call external APIs; they can get data from *any* source, s
 7. Copy the plugin scripts to the container
    ```
    docker cp AlexaRank xcloudshell:/usr/local/bin
-   docker cp bitly xcloudshell:/usr/local/bin
    docker cp cgprice xcloudshell:/usr/local/bin
    docker cp cgpricej xcloudshell:/usr/local/bin
    docker cp indexer xcloudshell:/usr/local/bin
@@ -215,4 +212,4 @@ Plugins don't have to call external APIs; they can get data from *any* source, s
     ```
 12. Tell the world what you've done! 
 
-[^1]: For security reasons you may prefer to build your own container using 
+[^1]: For security reasons you may prefer to build your own container using the Dockerfile found in the archive. This and the requirements.txt were used to create the xcloudsample image. 
