@@ -81,11 +81,11 @@ Plugins don't have to call external APIs; they can get data from *any* source, s
 
 ### using tarfile
 
-1. Download the [archive](https://github.com/walkjivefly/xcloud-plugins) to your servicenode plugins directory, eg:
+1. Download the [archive](https://github.com/walkjivefly/xcloud-plugins/archive/refs/tags/v1.0.tar.gz) to your servicenode plugins directory, eg:
    ```
    cd ~/.blocknet/plugins
-   wget thing
-   tar -xvf thing
+   wget https://github.com/walkjivefly/xcloud-plugins/archive/refs/tags/v1.0.tar.gz
+   tar -xvf xcloudsample
    ```
 2. Customise the API keys in individual plugins. These plugins require a personal API key:
    | Plugin | API key available from |
