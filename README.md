@@ -59,6 +59,7 @@ Docker-type plugins can be much more functional than RPC ones but are more compl
 | Plugin | Description |
 | ----------- | ----------- |
 | AlexaRank | Find the Alexa page rank for a URL |
+| bitly | Generate a bit.ly shortened URL |
 | cgprice | Get the current CoinGecko price for a coin or token |
 | cgpricej | Get extended current CoinGecko price information for a coin or token |
 | indexer | Run pre-packaged sample queries against the Blocknet/Avalanche indexer |
@@ -81,16 +82,17 @@ Plugins don't have to call external APIs; they can get data from *any* source, s
 
 ### using tarfile
 
-1. Download the [archive](https://github.com/walkjivefly/xcloud-plugins/archive/refs/tags/v1.0.tar.gz) to your servicenode plugins directory, eg:
+1. Download the [archive](https://github.com/walkjivefly/xcloud-plugins/archive/refs/tags/v1.0.1.tar.gz) to your servicenode plugins directory, eg:
    ```
    cd ~/.blocknet/plugins
-   wget https://github.com/walkjivefly/xcloud-plugins/archive/refs/tags/v1.0.tar.gz
+   wget https://github.com/walkjivefly/xcloud-plugins/archive/refs/tags/v1.0.1.tar.gz
    tar -xvf xcloudsample
    ```
 2. Customise the API keys in individual plugins. These plugins require a personal API key:
    | Plugin | API key available from |
    | ----------- | ----------- |
    | AlexaRank | https://aws.amazon.com/marketplace/pp/prodview-w6qmxismbbs7u?ref_=srh_res_product_title |
+   | bitly | https://support.bitly.com/hc/en-us/articles/230647907-How-do-I-generate-an-OAuth-access-token-for-the-Bitly-API- | 
    | weather | https://openweathermap.org/appid |
 3. The cgprice, cgpricej, yfprice and yfticker plugins don't (currently) require a personal API key.
 4. Customise the target address in the indexer plugin. This demonstrates that the actual service may be provided by some machine other than the servicenode host itself.
@@ -114,6 +116,7 @@ Plugins don't have to call external APIs; they can get data from *any* source, s
 7. Copy the plugin scripts to the container
    ```
    docker cp AlexaRank xcloudshell:/usr/local/bin
+   docker cp bitly xcloudshell:/usr/local/bin
    docker cp cgprice xcloudshell:/usr/local/bin
    docker cp cgpricej xcloudshell:/usr/local/bin
    docker cp indexer xcloudshell:/usr/local/bin
@@ -129,6 +132,7 @@ Plugins don't have to call external APIs; they can get data from *any* source, s
    ```
    total 48
    -rwxr-xr-x 1 1000 1000  278 Jun 19 10:43 AlexaRank
+   -rwxr-xr-x 1 1000 1000 1753 Jun 20 16:43 bitly
    -rwxr-xr-x 1 1000 1000 2569 Jun 19 11:24 cgprice
    -rwxr-xr-x 1 1000 1000 2787 Jun 19 11:24 cgpricej
    -rwxr-xr-x 1 root root  225 Jun 18 20:22 chardetect
@@ -144,6 +148,7 @@ Plugins don't have to call external APIs; they can get data from *any* source, s
    and that they do what they're supposed to, for example by
    ```
    docker exec xcloudshell AlexaRank bbc.co.uk
+   docker exec xcloudshell bitly https://www.ibm.com/
    docker exec xcloudshell cgprice btc eur
    docker exec xcloudshell indexer pairs
    docker exec xcloudshell weather kathmandu
@@ -157,7 +162,7 @@ Plugins don't have to call external APIs; they can get data from *any* source, s
    ``` 
 11. Add chosen plugins to your ```xrouter.conf```. Plugins can inherit the default ```[main]``` settings or you can customise them on a per-plugin basis. For example, add the following line to enable all of the example plugins
    ```
-   plugins=AlexaRank,cgprice,cgpricej,cgtest,indexer,yfprice,weather,yfticker,btc_blockchaininfo,block_blockchaininfo,dash_blockchaininfo,dgb_blockchaininfo,doge_blockchaininfo,ltc_blockchaininfo,rvn_blockchaininfo,scc_blockchaininfo,sys_blockchaininfo,xvg_blockchaininfo,crw_mnlist,crw_snlist,crw_txoutsetinfo,crw_blockchaininfo,crw_mempoolinfo,crw_peerinfo,xlq_mncount,xlq_mnlist,xlq_mempoolinfo,xlq_peerinfo,merge_mncount,merge_mnlist,merge_mempoolinfo,merge_peerinfo
+   plugins=AlexaRank,bitly,cgprice,cgpricej,cgtest,indexer,yfprice,weather,yfticker,btc_blockchaininfo,block_blockchaininfo,dash_blockchaininfo,dgb_blockchaininfo,doge_blockchaininfo,ltc_blockchaininfo,rvn_blockchaininfo,scc_blockchaininfo,sys_blockchaininfo,xvg_blockchaininfo,crw_mnlist,crw_snlist,crw_txoutsetinfo,crw_blockchaininfo,crw_mempoolinfo,crw_peerinfo,xlq_mncount,xlq_mnlist,xlq_mempoolinfo,xlq_peerinfo,merge_mncount,merge_mnlist,merge_mempoolinfo,merge_peerinfo
    ```
    Unless you are running DASH, DOGE, LTC, RVN, SCC, SYS, XVG, CRW, XLQ and MERGE you will need to choose only the plugins your servicenode can support. This is also your opportunity to extend the functionality of the XRouter network by creating xxx_blockchaininfo plugins for other coins accessible from your servicenode, or to create additional RPC plugins for other commands you think may be useful.
 
@@ -177,6 +182,7 @@ Plugins don't have to call external APIs; they can get data from *any* source, s
         "BLOCK",
         ...
         "xrs::AlexaRank",
+        "xrs::bitly",
         "xrs::block_blockchaininfo",
         "xrs::btc_blockchaininfo",
         "xrs::cgprice",
